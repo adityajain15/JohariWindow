@@ -13,16 +13,13 @@ let server = require('http').createServer(app).listen(port, function () {
 app.use(express.static('public'))
 
 // Create socket connection
-let io = require('socket.io').listen(server);
+let io = require('socket.io')(server, {
+  pingTimeout: 60000
+});
 
 // Listen for individual clients to connect
 io.sockets.on('connection',
   function (socket) {
-    
-    /*socket.emit('setPrompt', { prompt: game.getPrompt() })
-    socket.emit('initialState', { canvas: game.getCanvasState() })
-    io.sockets.emit('allPlayers', { players: game.allPlayers() })
-    socket.emit('currentPlayer', { currentPlayer: game.getCurrentPlayer() })*/
 
     socket.on('name', function ({ name }) {
       game.addPlayer(socket)
@@ -31,10 +28,16 @@ io.sockets.on('connection',
       io.to('game').emit('allPlayers', { players: game.allPlayers() })
       io.to('game').emit('allNames', { names: game.getNames() })
       io.to('game').emit('activeHost', { activeHost: game.getHost() })
+      if (game.hasStarted()) {
+        socket.emit('activePlayer', { activePlayer: game.getActivePlayer() })
+        socket.emit('getAdjectives', { adjectives: game.getAdjectives() })
+        socket.emit('hasResponded', { responders: game.getResponders() })
+      }
       game.printGameStatus()
     })
 
     socket.on('startGame', function () {
+      if(socket.id !== game.getHost()) { return }
       game.startGame()
       game.assignActivePlayer()
       io.to('game').emit('activePlayer', { activePlayer: game.getActivePlayer() })
@@ -51,8 +54,12 @@ io.sockets.on('connection',
     })
 
     socket.on('finishRound', function() {
-      game.assignActivePlayer()
-      io.to('game').emit('activePlayer', { currentPlayer: game.getActivePlayer() })
+      if(socket.id !== game.getHost()) { return }
+      game.nextRound()
+      io.to('game').emit('activePlayer', { activePlayer: game.getActivePlayer() })
+      io.to('game').emit('hasResponded', { responders: game.getResponders() })
+      io.to('game').emit('allResponses', { responses: game.getResponses() })
+      game.printGameStatus()
     })
 
     socket.on('disconnect', function() {
@@ -71,9 +78,21 @@ io.sockets.on('connection',
       }
       
       if(game.getActivePlayer() === socket.id) {
-        game.assignActivePlayer()
+        game.nextRound()
         io.to('game').emit('activePlayer', { activePlayer: game.getActivePlayer() })
+        io.to('game').emit('hasResponded', { responders: game.getResponders() })
+        io.to('game').emit('allResponses', { responses: game.getResponses() })
+        game.printGameStatus()
+      } else {
+        if(game.removeFromResponders(socket.id)){
+          io.to('game').emit('hasResponded', { responders: game.getResponders() })
+        }
+        if(game.shouldSendResponses()) {
+          io.to('game').emit('allResponses', { responses: game.getResponses() })
+        }
       }
+
+      // need to remove their responses if they have already responded
 
       if(game.getHost() === socket.id) {
         game.assignHost()

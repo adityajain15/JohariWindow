@@ -1,16 +1,18 @@
 <template>
   <div class="game">
     <QueueVisualization/>
-    <div v-if="waitingForHost" class="ma2">
+    <template v-if="waitingForHost">
       <Waiting/>
-    </div>
+    </template>
     <div v-else>
       <Instructions/>
       <template v-if="!submitted">
         <adjectiveList/>
       </template>
       <template v-else>
-        <JohariWindow/>
+        <button v-if="activeHost === id" @click="finishRound" class="center tc db mv4 pointer">Finish Round</button>
+        <JohariWindow class="ph3"/>
+        <ResponseList v-if="currentPlayerResponse.length + otherPlayerResponses.length >= players.length" class="mt5"/>
       </template>
     </div>
   </div>
@@ -25,6 +27,7 @@ import Waiting from '@/components/Waiting.vue'
 import Instructions from '@/components/Instructions.vue'
 import adjectiveList from '@/components/adjectiveList.vue'
 import JohariWindow from '@/components/JohariWindow.vue'
+import ResponseList from '@/components/ResponseList.vue'
 
 export default {
   name: 'Game',
@@ -33,7 +36,8 @@ export default {
     Waiting,
     Instructions,
     adjectiveList,
-    JohariWindow
+    JohariWindow,
+    ResponseList
   },
   computed: {
     submitted() {
@@ -43,10 +47,19 @@ export default {
       return this.activePlayer === ''
     },
     ...mapState([
+      'activeHost',
       'activePlayer',
       'id',
-      'hasResponded'
+      'hasResponded',
+      'currentPlayerResponse',
+      'otherPlayerResponses',
+      'players'
     ])
+  },
+  methods: {
+    finishRound() {
+      this.$socket.emit('finishRound')
+    }
   }
 }
 </script>

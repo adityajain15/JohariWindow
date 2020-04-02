@@ -12,7 +12,8 @@ export default new Vuex.Store({
     id: '',
     adjectives: [],
     hasResponded: [],
-    responses: {}
+    currentPlayerResponse: [],
+    otherPlayerResponses: []
   },
   mutations: {
     SOCKET_allPlayers (state, { players }) {
@@ -37,7 +38,9 @@ export default new Vuex.Store({
       state.hasResponded = responders
     },
     SOCKET_allResponses (state, { responses }) {
-      state.responses = responses
+      const { currentPlayer, otherPlayers } = responses
+      state.currentPlayerResponse = currentPlayer
+      state.otherPlayerResponses = otherPlayers
     }
   },
   actions: {

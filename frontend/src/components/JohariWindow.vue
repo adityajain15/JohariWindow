@@ -1,34 +1,34 @@
 <template>
-  <div class="w-100 vh-75 tc pa3">
+  <div class="w-100 vh-75 tc f6">
     <div class="w-100 dt dt--fixed h-10">
       <div class="w-10 dtc"></div>
-      <div class="w-40 dtc v-btm">Known to self</div>
-      <div class="w-40 dtc v-btm">Not known to self</div>
+      <div class="w-40 dtc v-btm teko f4">Known to self</div>
+      <div class="w-40 dtc v-btm teko f4">Not known to self</div>
     </div>
     <div class="h-90">
       <div class="w-100 dt dt--fixed h-50">
-        <div class="w-10 dtc v-mid tr ph2">Known to others</div>
+        <div class="w-10 dtc v-mid tr ph2 teko f4">Known to others</div>
         <div class="w-40 dtc ba">
           <template v-for="(word, index) in arena">
-            <span class="mh2 dib" :key="`arena-${index}`">{{word}}</span>
+            <span class="mh2 dib opensans" :key="`arena-${index}`">{{word}}</span>
           </template>
         </div>
         <div class="w-40 dtc ba">
           <template v-for="(word, index) in blindspot">
-            <span class="mh2 dib" :key="`blindspot-${index}`">{{word}}</span>
+            <span class="mh2 dib opensans" :key="`blindspot-${index}`">{{word}}</span>
           </template>
         </div>
       </div>
       <div class="w-100 dt dt--fixed h-50">
-        <div class="w-10 dtc v-mid tr ph2">Not known to others</div>
+        <div class="w-10 dtc v-mid tr ph2 teko f4">Not known to others</div>
         <div class="w-40 dtc ba">
           <template v-for="(word, index) in facade">
-            <span class="mh2 dib" :key="`facade-${index}`">{{word}}</span>
+            <span class="mh2 dib opensans" :key="`facade-${index}`">{{word}}</span>
           </template>
         </div>
         <div class="w-40 dtc ba">
           <template v-for="(word, index) in unknowns">
-            <span class="mh2 dib" :key="`unknowns-${index}`">{{word}}</span>
+            <span class="mh2 dib opensans" :key="`unknowns-${index}`">{{word}}</span>
           </template>
         </div>
       </div>
@@ -44,26 +44,24 @@ export default {
   name: 'JohariWindow',
   computed: {
     arena () {
-      return this.activePlayerResponse.filter(d=>this.otherPlayerResponses.includes(d))
+      return this.currentPlayerResponse.filter(d=>this.distinctOtherPlayerResponses.includes(d))
     },
     facade (){
-      return this.activePlayerResponse.filter(d=>!this.otherPlayerResponses.includes(d))
+      return this.currentPlayerResponse.filter(d=>!this.distinctOtherPlayerResponses.includes(d))
     },
     blindspot () {
-      return this.otherPlayerResponses.filter(d=>!this.activePlayerResponse.includes(d))
+      return this.distinctOtherPlayerResponses.filter(d=>!this.currentPlayerResponse.includes(d))
     },
     unknowns () {
-      return this.adjectives.filter(d=>!this.otherPlayerResponses.includes(d) && !this.activePlayerResponse.includes(d))
+      return this.currentPlayerResponse.length || this.distinctOtherPlayerResponses.length ? 
+        this.adjectives.filter(d=>!this.distinctOtherPlayerResponses.includes(d) && !this.currentPlayerResponse.includes(d)) : []
     },
-    activePlayerResponse () {
-      return this.responses.currentPlayer || []
-    },
-    otherPlayerResponses () {
-      return this.responses.otherPlayers ?
-        Array.from(new Set(this.responses.otherPlayers.flat())) : []
+    distinctOtherPlayerResponses () {
+      return this.otherPlayerResponses.length ? Array.from(new Set(this.otherPlayerResponses.flat())) : []
     },
     ...mapState([
-      'responses',
+      'currentPlayerResponse',
+      'otherPlayerResponses',
       'adjectives'
     ])
   }

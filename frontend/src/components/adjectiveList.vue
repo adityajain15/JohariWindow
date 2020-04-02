@@ -8,15 +8,15 @@
     <div class="w-50 vh-50 fl flex items-center justify-center">
       <div class="tc">
         <div class="w-100">
-          <span v-if="error.length" class="db">{{error}}</span>
+          <span v-if="error.length" class="db mb3 teko red w-70 center">{{error}}</span>
           <template v-if="selected.length">
-            <span class="db b">You have chosen:</span>
+            <span class="db teko f3">You have chosen</span>
             <template v-for="(adj, index) in selected">
               <span class="db" :key="`chosen-${index}`">{{adj}}</span>
             </template>
           </template>
         </div>
-        <button v-if="selected.length" class="dib mt4 pointer grow bw3" @click="sendResponses">Submit</button>
+        <button v-if="selected.length" class="dib mt4 pointer grow" @click="sendResponses">Submit</button>
       </div>
     </div>
     
@@ -49,7 +49,7 @@ export default {
         this.selected = this.selected.filter(d=> d !== adjective)
       } else {
         if(this.selected.length === 6) {
-          this.error = 'You cannot select more than 6 adjectives'
+          this.error = 'You cannot select more than 6 adjectives, unselect some adjectives before choosing this adjective'
           return
         }
         this.selected.push(adjective)
@@ -64,8 +64,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-button {
-  border: 2px solid black;
-  border-radius: 4px;
-}
+
 </style>

@@ -9,7 +9,7 @@ class Game{
     this.gameStarted = false
     this.names = {}
     this.activePlayerResponse = []
-    this.otherPlayerResponses = []
+    this.otherPlayerResponses = {}
     this.hasResponded = []
   }
 
@@ -71,12 +71,16 @@ class Game{
     this.gameStarted = false
     this.names = {}
     this.activePlayerResponse = []
-    this.otherPlayerResponses = []
+    this.otherPlayerResponses = {}
     this.hasResponded = []
   }
 
   startGame() {
     this.gameStarted = true
+  }
+
+  hasStarted () {
+    return this.gameStarted
   }
 
   addName(socketID, name) {
@@ -91,23 +95,34 @@ class Game{
     return adjectives
   }
 
+  nextRound() {
+    this.assignActivePlayer()
+    this.activePlayerResponse = []
+    this.otherPlayerResponses = {}
+    this.hasResponded = []
+  }
+
   addResponse(response, id) {
     this.hasResponded.push(id)
     if(id === this.activePlayer) {
       this.activePlayerResponse = response
     } else {
-      this.otherPlayerResponses.push(response)
+      this.otherPlayerResponses[id] = response
     }
   }
 
   shouldSendResponses() {
-    return (this.otherPlayerResponses.length + 1) === this.players.length
+    // players left before responding
+    // players left after responding
+    // need to make sure that everyone in the game currently has responded, if so yes
+    // return this.hasResponded.length === this.players.length
+    return this.players.every(player => this.hasResponded.includes(player.id))
   }
 
   getResponses() {
     return {
       currentPlayer: this.activePlayerResponse,
-      otherPlayers: this.otherPlayerResponses
+      otherPlayers: Object.values(this.otherPlayerResponses)
     }
   }
 
@@ -115,9 +130,19 @@ class Game{
     return this.hasResponded
   }
 
+  removeFromResponders(id) {
+    if(this.hasResponded.includes(id)){
+      delete this.otherPlayerResponses[id]
+      this.hasResponded = this.hasResponded.filter(d=> d !== id)
+      return true
+    }
+    return false
+  }
+
   printGameStatus() {
     console.log(`Queue length: ${this.players.length}`)
     console.log(`Queue: ${this.players.map(d=>d.id)}`)
+    console.log(`Responders: ${this.hasResponded}`)
     console.log(`Names: ${Object.values(this.names)}`)
     console.log(`Current host: ${this.getHost()}`)
     console.log(`Current player: ${this.getActivePlayer()}`)

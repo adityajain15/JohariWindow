@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import 'reset-css'
 import 'tachyons'
-
 import VueSocketIO from 'vue-socket.io'
 
 Vue.config.productionTip = false

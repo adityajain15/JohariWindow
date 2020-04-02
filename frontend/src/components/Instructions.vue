@@ -1,5 +1,5 @@
 <template>
-  <div id="instructionWrapper" class="h-25 tc">
+  <div id="instructionWrapper" class="h-25 tc opensans">
     <div v-if="myTurn">
       <span class="db">It is <span class="deeppink">your</span> turn</span>
       <span class="db">Pick a maximum of 6 adjectives that describe <span class="deeppink">you</span> from the list below</span>
