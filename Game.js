@@ -1,4 +1,4 @@
- const adjectives = require('./assets/adjectives.js')
+ const adjectives = require('./assets/adjectives')
 
 class Game{
   constructor(){
