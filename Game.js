@@ -27,10 +27,6 @@ class Game{
     delete this.names[id]
   }
 
-  findPlayer (id) {
-    return this.players.find(d => d.id === id)
-  }
-
   inGame (id) {
     return this.allPlayers().includes(id)
   }
@@ -112,10 +108,6 @@ class Game{
   }
 
   shouldSendResponses() {
-    // players left before responding
-    // players left after responding
-    // need to make sure that everyone in the game currently has responded, if so yes
-    // return this.hasResponded.length === this.players.length
     return this.players.every(player => this.hasResponded.includes(player.id))
   }
 

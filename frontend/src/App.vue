@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="w-100 opensans">
-    <router-view id="router-view" class="min-vh-100 mw8 center pt2 pb5"/>
+    <router-view id="router-view" class="min-vh-100 mw8 center"/>
   </div>
 </template>
 
@@ -34,5 +34,11 @@
 button {
   border: 2px solid black;
   border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover{
+  background: black;
+  color: white;
 }
 </style>

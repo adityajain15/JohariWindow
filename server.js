@@ -21,7 +21,14 @@ let io = require('socket.io')(server, {
 io.sockets.on('connection',
   function (socket) {
 
-    socket.on('name', function ({ name }) {
+    socket.on('name', function ({ name = socket.id }) {
+      // check if already in the game, if so only change the name and return
+      if (game.inGame(socket.id)) {
+        game.addName(socket.id, name)
+        io.to('game').emit('allNames', { names: game.getNames() })
+        game.printGameStatus()
+        return
+      }
       game.addPlayer(socket)
       game.addName(socket.id, name)
       socket.join('game')

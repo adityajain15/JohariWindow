@@ -8,28 +8,40 @@
     <div class="h-90">
       <div class="w-100 dt dt--fixed h-50">
         <div class="w-10 dtc v-mid tr ph2 teko f4">Known to others</div>
-        <div class="w-40 dtc ba">
+        <div class="w-40 dtc ba relative">
           <template v-for="(word, index) in arena">
             <span class="mh2 dib opensans" :key="`arena-${index}`">{{word}}</span>
           </template>
+          <div class="absolute bottom-0 right-0 tr silver">
+            <span class="teko f3">Arena</span>
+          </div>
         </div>
-        <div class="w-40 dtc ba">
+        <div class="w-40 dtc ba relative">
           <template v-for="(word, index) in blindspot">
             <span class="mh2 dib opensans" :key="`blindspot-${index}`">{{word}}</span>
           </template>
+          <div class="absolute bottom-0 right-0 tr silver">
+            <span class="teko f3">Blindspot</span>
+          </div>
         </div>
       </div>
       <div class="w-100 dt dt--fixed h-50">
         <div class="w-10 dtc v-mid tr ph2 teko f4">Not known to others</div>
-        <div class="w-40 dtc ba">
+        <div class="w-40 dtc ba relative">
           <template v-for="(word, index) in facade">
             <span class="mh2 dib opensans" :key="`facade-${index}`">{{word}}</span>
           </template>
+          <div class="absolute bottom-0 right-0 tr silver">
+            <span class="teko f3">Facade</span>
+          </div>
         </div>
-        <div class="w-40 dtc ba">
+        <div class="w-40 dtc ba relative">
           <template v-for="(word, index) in unknowns">
             <span class="mh2 dib opensans" :key="`unknowns-${index}`">{{word}}</span>
           </template>
+          <div class="absolute bottom-0 right-0 tr silver">
+            <span class="teko f3">Unknowns</span>
+          </div>
         </div>
       </div>
     </div>

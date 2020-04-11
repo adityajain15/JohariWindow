@@ -1,13 +1,14 @@
 <template>
-  <div id="instructionWrapper" class="h-25 tc opensans">
+  <div id="instructionWrapper" class="h-25 tc opensans lh-copy">
     <div v-if="myTurn">
-      <span class="db">It is <span class="deeppink">your</span> turn</span>
-      <span class="db">Pick a maximum of 6 adjectives that describe <span class="deeppink">you</span> from the list below</span>
+      <span class="db"><span class="deeppink">You</span> are the subject</span>
+      <span class="db">Pick no more than 6 adjectives that describe you from the list below</span>
+      <span class="db">Your peers will also select a list of adjectives to describe you</span>
       <span class="db">When you are finished, click submit and wait for others to submit their responses</span>
     </div>
     <div v-else>
-      <span class="db">It is <span class="deeppink">{{names[activePlayer]}}</span>’s turn</span>
-      <span class="db">Pick a maximum of 6 adjectives that describe <span class="deeppink">{{names[activePlayer]}}</span> from the list below</span>
+      <span class="db"><span class="deeppink">{{names[activePlayer]}}</span> is the subject</span>
+      <span class="db">Pick no more than 6 adjectives that describe <span class="deeppink">{{names[activePlayer]}}</span> from the list below</span>
       <span class="db">When you are finished, click submit and wait for others to submit their responses</span>
     </div>
   </div>

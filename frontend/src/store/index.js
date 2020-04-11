@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { newResponse, playerJoin, playerLeave, gameBegin, ovation } from '@/assets/sounds'
 
 Vue.use(Vuex)
+
+
 
 export default new Vuex.Store({
   state: {
@@ -17,12 +20,19 @@ export default new Vuex.Store({
   },
   mutations: {
     SOCKET_allPlayers (state, { players }) {
+      if(state.players.length < players.length) {
+        playerJoin.play()
+      } else {
+        playerLeave.play()
+      }
       state.players = players
     },
     SOCKET_allNames (state, { names }) {
       state.names = names
     },
     SOCKET_activePlayer (state, { activePlayer }) {
+      if(!state.activePlayer.length) { gameBegin.play() }
+      else { ovation.play() }
       state.activePlayer = activePlayer
     },
     SOCKET_activeHost (state, { activeHost }) {
@@ -35,6 +45,7 @@ export default new Vuex.Store({
       state.adjectives = adjectives
     },
     SOCKET_hasResponded (state, { responders }) {
+      if(state.hasResponded.length < responders.length ) { newResponse.play() }
       state.hasResponded = responders
     },
     SOCKET_allResponses (state, { responses }) {

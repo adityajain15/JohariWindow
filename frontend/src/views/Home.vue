@@ -1,7 +1,7 @@
 <template>
-  <div class="w-100">
+  <div class="w-100 pv4">
     <div id="homeWrapper" class="w-70 center">
-      <h1 class="teko tc f1">The Johari Window</h1>
+      <h1 class="teko tc f1 db mv1">The Johari Window</h1>
       <blockquote cite="https://en.wikipedia.org/wiki/Johari_window" class="mv5">
         <p>
           The Johari window is a technique that helps people better understand 
@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     submit: function (e) {
-      this.$socket.emit('name', { name: this.name })
-      this.$router.push('/game')
+      this.$socket.emit('name', { name: this.name === '' ? undefined: this.name })
+      this.$router.push('/rules')
     }
   }
 }
