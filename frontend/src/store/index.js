@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { newResponse, playerJoin, playerLeave, gameBegin, ovation } from '@/assets/sounds'
+import { newResponse, playerJoin, playerLeave, gameBegin } from '@/assets/sounds'
 
 Vue.use(Vuex)
-
-
 
 export default new Vuex.Store({
   state: {
@@ -16,7 +14,7 @@ export default new Vuex.Store({
     adjectives: [],
     hasResponded: [],
     currentPlayerResponse: [],
-    otherPlayerResponses: []
+    otherPlayerResponses: {}
   },
   mutations: {
     SOCKET_allPlayers (state, { players }) {
@@ -32,7 +30,6 @@ export default new Vuex.Store({
     },
     SOCKET_activePlayer (state, { activePlayer }) {
       if(!state.activePlayer.length) { gameBegin.play() }
-      else { ovation.play() }
       state.activePlayer = activePlayer
     },
     SOCKET_activeHost (state, { activeHost }) {

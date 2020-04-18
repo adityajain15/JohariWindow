@@ -9,19 +9,25 @@
       <div class="w-100 dt dt--fixed h-50">
         <div class="w-10 dtc v-mid tr ph2 teko f4">Known to others</div>
         <div class="w-40 dtc ba relative">
-          <template v-for="(word, index) in arena">
-            <span class="mh2 dib opensans" :key="`arena-${index}`">{{word}}</span>
-          </template>
+          <div v-for="(word, index) in arena" class="dib mh2" :key="`arena-${index}`">
+            <span class="mr1">{{word}}</span>
+            <span v-for="(player, j) in getPlayers(word)" class="dib tc v-mid playerCircle" :key="`a-${index}-${j}`">
+              {{player}}
+            </span>
+          </div>
           <div class="absolute bottom-0 right-0 tr silver">
             <span class="teko f3">Arena</span>
           </div>
         </div>
         <div class="w-40 dtc ba relative">
-          <template v-for="(word, index) in blindspot">
-            <span class="mh2 dib opensans" :key="`blindspot-${index}`">{{word}}</span>
-          </template>
           <div class="absolute bottom-0 right-0 tr silver">
             <span class="teko f3">Blindspot</span>
+          </div>
+          <div v-for="(word, index) in blindspot" class="dib mh2" :key="`blindspot-${index}`">
+            <span class="mr1">{{word}}</span>
+            <span v-for="(player, j) in getPlayers(word)" class="dib tc v-mid playerCircle" :key="`s-${index}-${j}`">
+              {{player}}
+            </span>
           </div>
         </div>
       </div>
@@ -54,6 +60,17 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'JohariWindow',
+  methods: {
+    getPlayers(word) {
+      const players = []
+      for(let i = 0; i < this.otherPlayerResponses.length; i++) {
+        if(this.otherPlayerResponses[i].includes(word)) {
+          players.push(i + 1)
+        }
+      }
+      return players
+    }
+  },
   computed: {
     arena () {
       return this.currentPlayerResponse.filter(d=>this.distinctOtherPlayerResponses.includes(d))
@@ -69,7 +86,7 @@ export default {
         this.adjectives.filter(d=>!this.distinctOtherPlayerResponses.includes(d) && !this.currentPlayerResponse.includes(d)) : []
     },
     distinctOtherPlayerResponses () {
-      return this.otherPlayerResponses.length ? Array.from(new Set(this.otherPlayerResponses.flat())) : []
+      return Object.values(this.otherPlayerResponses).length ? Array.from(new Set(Object.values(this.otherPlayerResponses).flat())) : []
     },
     ...mapState([
       'currentPlayerResponse',
@@ -93,5 +110,14 @@ export default {
 }
 .h-80{
   height: 80%;
+}
+
+.playerCircle{
+  height: 15px;
+  width: 15px;
+  border: 1px solid black;
+  border-radius: 100px;
+  padding: 2px;
+  font-size: 12px;
 }
 </style>

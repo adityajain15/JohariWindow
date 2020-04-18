@@ -1,4 +1,4 @@
- const adjectives = require('./assets/adjectives')
+ const adjectives = require('./assets/modernAdjectives')
 
 class Game{
   constructor(){
@@ -36,10 +36,15 @@ class Game{
   }
 
   assignActivePlayer() {
+    if(this.discardedPile.length >= this.players.length) { this.gameFinishHack() }
     const candidates = this.players.filter(player => !this.discardedPile.includes(player.id))
     const selected = candidates[Math.floor(Math.random() * candidates.length)]
     this.activePlayer = selected.id
     this.discardedPile.push(selected.id)
+  }
+
+  gameFinishHack () {
+    this.discardedPile = []
   }
 
   getActivePlayer() {
@@ -114,7 +119,7 @@ class Game{
   getResponses() {
     return {
       currentPlayer: this.activePlayerResponse,
-      otherPlayers: Object.values(this.otherPlayerResponses)
+      otherPlayers: this.otherPlayerResponses
     }
   }
 

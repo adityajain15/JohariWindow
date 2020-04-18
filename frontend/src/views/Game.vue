@@ -14,8 +14,8 @@
       <template v-else>
         <button v-if="activeHost === id" @click="finishRound" class="center tc db mv4 pointer">Finish Round</button>
         <JohariWindow class="ph3"/>
-        <DialogueQuestions v-if="currentPlayerResponse.length + otherPlayerResponses.length >= players.length" class="w-80 center pv4"/>
-        <ResponseList v-if="currentPlayerResponse.length + otherPlayerResponses.length >= players.length" class="pv4"/>
+        <DialogueQuestions v-if="currentPlayerResponse.length + Object.values(otherPlayerResponses).length >= players.length" class="w-80 center pv4"/>
+        <ResponseList v-if="currentPlayerResponse.length + Object.values(otherPlayerResponses).length >= players.length" class="pv4"/>
       </template>
     </div>
   </div>

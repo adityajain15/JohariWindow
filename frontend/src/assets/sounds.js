@@ -8,10 +8,6 @@ export const playerLeave = new Howl({
   src: [require('@/assets/blip-2.mp3')]
 })
 
-export const ovation = new Howl({
-  src: [require('@/assets/ovation.mp3')]
-})
-
 export const gameBegin = new Howl({
   src: [require('@/assets/store-chime.mp3')]
 })

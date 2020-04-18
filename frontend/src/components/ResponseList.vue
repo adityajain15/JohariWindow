@@ -1,6 +1,6 @@
 <template>
   <div class="w-80 center">
-    <h3 class="tc teko f3 pv2">Anonymized Responses</h3>
+    <h3 class="tc teko f3 pv2">Responses</h3>
     <div class="pv2">
       <span class="teko f4">{{ names[activePlayer] }}</span>
       <div class="w-100">
@@ -10,7 +10,7 @@
       </div>
     </div>
     <div v-for="(player, index) in otherPlayerResponses" class="pv2" :key="`player-wrapper-${index}`">
-      <span class="db f4 teko">Player {{ index + 1 }}</span>
+      <span class="db f4 teko">{{names[index]}}</span>
       <div class="w-100">
         <template v-for="(response, indexB) in player">
           <div class="cellWidth dib" :key="`other-player-${index}-response-${indexB}`">{{ response }}</div>
