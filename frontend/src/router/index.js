@@ -25,6 +25,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue')
   },
   {
+    path: '/room/:roomId',
+    name: 'Room',
+    beforeEnter: (to, from, next) => {
+      if (!from.name) { 
+        next({ name: 'Home', query: { room: to.params.roomId } })
+      }
+      next()
+    },
+    component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue'),
+  },
+  {
     path: '/rules',
     name: 'Rules',
     beforeEnter: (to, from, next) => {

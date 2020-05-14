@@ -69,6 +69,7 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
+    this.$socket.emit('leaveRoom')
     next()
   }
 }

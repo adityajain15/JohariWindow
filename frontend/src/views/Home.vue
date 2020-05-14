@@ -13,8 +13,22 @@
         </p>
         <footer><cite>Wikipedia</cite></footer>
       </blockquote>
-      <input v-model="name" ref="name" @keyup.enter="submit" placeholder="Enter your name" class="db center">
-      <button @click="submit" class="center mv3 db">Submit</button>
+      <div>
+        <div class="w-50 dib v-top">
+          <h2 class="f2 teko tc">Create a room</h2>
+          <input v-model="name" @keyup.enter="submit" ref="createName" placeholder="Enter your name" class="db center">
+          <button @click="createGame" class="center mv3 db">Create Room</button>
+        </div>
+        <div class="w-50 dib v-top">
+          <h2 class="f2 teko tc">Join an existing room</h2>
+          <input v-model="name" ref="joinName" placeholder="Enter your name" class="db center">
+          <input v-model="room" ref="roomid" placeholder="Enter room id" class="db center">
+          <button @click="joinGame" class="center mv3 db">Join Room</button>
+          
+
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -27,16 +41,30 @@ export default {
   name: 'Home',
   data () {
     return {
-      name: ''
+      name: '',
+      room: ''
     }
   },
   mounted(){
-    this.$refs.name.focus()
+    this.room = this.$route.query.room ? this.$route.query.room : ''
   },
   methods: {
-    submit: function (e) {
-      this.$socket.emit('name', { name: this.name === '' ? undefined: this.name })
-      this.$router.push('/rules')
+    joinGame: function (e) {
+      if(this.room.length) {
+        this.$socket.emit('joinGame', { room: this.room, name: this.name === '' ? undefined : this.name })
+      }
+    },
+    createGame: function (e) {
+      this.$socket.emit('createGame', { name: this.name === '' ? undefined : this.name })
+    }
+  },
+  sockets: {
+    roomInfo: function ({room, error}) {
+      if(error) {
+        console.log('No room found!')
+      } else {
+        this.$router.push(`/room/${room}`)
+      }
     }
   }
 }
