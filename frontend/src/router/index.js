@@ -11,21 +11,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/game',
-    name: 'Game',
-    beforeEnter: (to, from, next) => {
-      if (!from.name) { 
-        next({ name: 'Home' })
-      }
-      next()
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue')
-  },
-  {
-    path: '/room/:roomId',
+    path: '/:roomId',
     name: 'Room',
     beforeEnter: (to, from, next) => {
       if (!from.name) { 
@@ -34,20 +20,10 @@ const routes = [
       next()
     },
     component: () => import(/* webpackChunkName: "game" */ '../views/Game.vue'),
-  },
-  {
-    path: '/rules',
-    name: 'Rules',
-    beforeEnter: (to, from, next) => {
-      if (!from.name) { 
-        next({ name: 'Home' })
-      }
-      next()
-    },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "rules" */ '../views/Rules.vue')
+    children: [
+      { path: '', name: 'roominterface', component: () => import(/* webpackChunkName: "roominterface" */ '@/components/RoomInterface.vue') },
+      { path: 'rules', name: 'rules', component: () => import(/* webpackChunkName: "rules" */ '@/components/Rules.vue') }
+    ]
   }
 ]
 

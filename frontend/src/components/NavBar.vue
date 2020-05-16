@@ -1,7 +1,8 @@
 <template>
   <nav class="w-100 cf tc teko f2">
-    <router-link :class="`w-50 fl pa2`" to="/game">Play</router-link>
-    <router-link :class="`w-50 fl pa2`" to="/rules">Instructions</router-link>
+    <router-link :class="`w-third fl pa2`" :to="{name: 'Home'}">Home</router-link>
+    <router-link :class="`w-third fl pa2`" :to="{name: 'roominterface'}">Room</router-link>
+    <router-link :class="`w-third fl pa2`" :to="{name: 'rules'}">Instructions</router-link>
   </nav>
 </template>
 
@@ -41,7 +42,7 @@ a{
   background: white;
 }
 
-.router-link-active {
+.router-link-exact-active {
   background: black;
   color: white;
 }

@@ -1,11 +1,18 @@
-// Create server
-let port = process.env.PORT || 8000;
-let express = require('express');
-let app = express();
+const fs = require('fs')
+const express = require('express')
+const app = express()
+const cert = process.env.NODE_ENV === 'development' ? 'localhost.crt' : '/etc/letsencrypt/live/johari.xyz/fullchain.pem'
+const key = process.env.NODE_ENV === 'development' ? 'localhost.key' : '/etc/letsencrypt/live/johari.xyz/privkey.pem'
+const port = process.env.NODE_ENV === 'development' ? 8000 : 443
 const history = require('connect-history-api-fallback')
-let server = require('http').createServer(app).listen(port, function () {
-  console.log('Server listening at port: ', port);
-});
+const server = require('https')
+  .createServer({
+    key: fs.readFileSync(key),
+    cert: fs.readFileSync(cert)
+  }, app)
+  .listen(port, function () {
+    console.log('Server listening at port: ', port);
+  });
 app.use(history())
 // Tell server where to look for files
 app.use(express.static('public'))
@@ -40,7 +47,7 @@ io.sockets.on('connection',
     socket.on('joinGame', function ({name, room}) {
       const game = manager.findGame(room)
       if(!game) {
-        socket.emit('roomInfo', { error: 'No room found!' })
+        socket.emit('roomInfo', { error: 'Room ID not found' })
         return
       }
       socket.join(room)

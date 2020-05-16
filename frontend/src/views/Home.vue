@@ -14,20 +14,27 @@
         <footer><cite>Wikipedia</cite></footer>
       </blockquote>
       <div>
-        <div class="w-50 dib v-top">
-          <h2 class="f2 teko tc">Create a room</h2>
-          <input v-model="name" @keyup.enter="submit" ref="createName" placeholder="Enter your name" class="db center">
+        <div class="w-50 dib v-top tc">
+          <h2 class="f2 teko">Create a room</h2>
+          <div class="db b">
+            <label for="createname">Name</label>
+            <input v-model="name" @keyup.enter="submit" name="createname" ref="createName" placeholder="Enter your name" class="ml2">
+          </div>
           <button @click="createGame" class="center mv3 db">Create Room</button>
         </div>
-        <div class="w-50 dib v-top">
-          <h2 class="f2 teko tc">Join an existing room</h2>
-          <input v-model="name" ref="joinName" placeholder="Enter your name" class="db center">
-          <input v-model="room" ref="roomid" placeholder="Enter room id" class="db center">
+        <div class="w-50 dib v-top tc">
+          <h2 class="f2 teko">Join an existing room</h2>
+          <div class="db b pb2">
+            <label for="name">Name</label>
+            <input v-model="name" name="name" ref="joinName" placeholder="Enter your name" class="ml2">
+          </div>
+          <div class="db b">
+            <label for="roomid">Room ID</label>
+            <input v-model="room" name="roomid" ref="roomid" placeholder="Enter room id" class="ml2">
+          </div>
           <button @click="joinGame" class="center mv3 db">Join Room</button>
-          
-
-
         </div>
+        <span v-if="error" class="red b tc db">{{error}}</span>
       </div>
     </div>
   </div>
@@ -42,28 +49,41 @@ export default {
   data () {
     return {
       name: '',
-      room: ''
+      room: '',
+      error: ''
     }
   },
   mounted(){
-    this.room = this.$route.query.room ? this.$route.query.room : ''
+    if(this.$route.query.room) {
+      this.room = this.$route.query.room
+      this.$refs.joinName.focus()
+    }
+    
   },
   methods: {
     joinGame: function (e) {
-      if(this.room.length) {
-        this.$socket.emit('joinGame', { room: this.room, name: this.name === '' ? undefined : this.name })
+      if(!this.name.length) {
+        this.error = 'You must enter a name'
+      } else if (!this.room.length) {
+        this.error = 'You must enter a room ID'
+      } else {
+        this.$socket.emit('joinGame', { room: this.room, name: this.name })
       }
     },
     createGame: function (e) {
-      this.$socket.emit('createGame', { name: this.name === '' ? undefined : this.name })
+      if(!this.name.length) {
+        this.error = 'You must enter a name'
+      } else {
+        this.$socket.emit('createGame', { name: this.name })
+      }
     }
   },
   sockets: {
     roomInfo: function ({room, error}) {
       if(error) {
-        console.log('No room found!')
+        this.error = error
       } else {
-        this.$router.push(`/room/${room}`)
+        this.$router.push(`/${room}`)
       }
     }
   }

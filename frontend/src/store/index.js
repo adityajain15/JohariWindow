@@ -49,11 +49,21 @@ export default new Vuex.Store({
       const { currentPlayer, otherPlayers } = responses
       state.currentPlayerResponse = currentPlayer
       state.otherPlayerResponses = otherPlayers
+    },
+    resetStore (state) {
+      state.names = {}
+      state.players = []
+      state.activePlayer = ''
+      state.activeHost = ''
+      state.adjectives = []
+      state.hasResponded = []
+      state.currentPlayerResponse = []
+      state.otherPlayerResponses = {}
     }
   },
   actions: {
-    dsad({commit}, {names}) {
-      this.names = names
+    leaveRoom ({commit}) {
+      commit('resetStore')
     }
   }
 })

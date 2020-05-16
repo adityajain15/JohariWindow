@@ -1,6 +1,5 @@
 <template>
   <div>
-    <NavBar/>
     <div class="rulesWrapper w-80 center lh-copy">
       <h1 class="teko"></h1>
       <p>
@@ -13,11 +12,11 @@
           </li>
           <li>
             The subject picks a certain number of adjectives from a given list,
-            choosing ones they feel describe their own personality
+            choosing the ones that they feel describe themselves
           </li>
           <li>
             The subject's peers then get the same list, and each peer also picks a
-            certain number of adjectives that describe the subject.
+            certain number of adjectives that describe the subject
           </li>
           <img src="@/assets/jw_example.jpeg" class="w-50 db center">
           <li>
@@ -59,22 +58,8 @@
 </template>
 
 <script>
-// @ is an alias to /src
-import NavBar from '@/components/NavBar.vue'
-
 export default {
-  name: 'Rules',
-  components: {
-    NavBar
-  },
-  methods: {
-    finishRound() {
-      this.$socket.emit('finishRound')
-    }
-  },
-  beforeRouteLeave (to, from, next) {
-    next()
-  }
+  name: 'Rules'
 }
 </script>
 
