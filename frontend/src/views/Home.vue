@@ -58,7 +58,6 @@ export default {
       this.room = this.$route.query.room
       this.$refs.joinName.focus()
     }
-    
   },
   methods: {
     joinGame: function (e) {
