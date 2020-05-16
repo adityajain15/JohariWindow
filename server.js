@@ -5,6 +5,11 @@ const cert = process.env.NODE_ENV === 'development' ? 'localhost.crt' : '/etc/le
 const key = process.env.NODE_ENV === 'development' ? 'localhost.key' : '/etc/letsencrypt/live/johari.xyz/privkey.pem'
 const port = process.env.NODE_ENV === 'development' ? 8000 : 443
 const history = require('connect-history-api-fallback')
+const forceSSL = require('express-force-ssl');
+const bodyParser = require('body-parser')
+const http = require('http')
+
+const httpServer = http.createServer(app).listen(80)
 const server = require('https')
   .createServer({
     key: fs.readFileSync(key),
@@ -13,6 +18,13 @@ const server = require('https')
   .listen(port, function () {
     console.log('Server listening at port: ', port);
   });
+
+app.set('forceSSLOptions', {
+  httpsPort: port
+})
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(forceSSL)
 app.use(history())
 // Tell server where to look for files
 app.use(express.static('public'))
