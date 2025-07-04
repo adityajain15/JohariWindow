@@ -13,7 +13,7 @@ let server = require('http')
   })
 app.use(history())
 // Tell server where to look for files
-app.use('/johari-window', express.static('public'))
+app.use(express.static('public'))
 
 // Create socket connection
 let io = require('socket.io')(server, {
