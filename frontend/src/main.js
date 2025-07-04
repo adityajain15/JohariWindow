@@ -13,7 +13,7 @@ Vue.use(
     debug: process.env.NODE_ENV === 'production' ? false : true,
     connection:
       process.env.NODE_ENV === 'production'
-        ? 'https://sigri.com/johari-window/socket.io/'
+        ? 'https://sigri.com/johari-window'
         : 'http://localhost:8000',
     vuex: {
       store,
