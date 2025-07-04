@@ -8,18 +8,23 @@ import VueSocketIO from 'vue-socket.io'
 
 Vue.config.productionTip = false
 
-Vue.use(new VueSocketIO({
-  debug: process.env.NODE_ENV === 'production' ? false : true,
-  connection: process.env.NODE_ENV === 'production' ? 'http://142.93.2.154/' : 'http://localhost:8000',
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  }
-}))
+Vue.use(
+  new VueSocketIO({
+    debug: process.env.NODE_ENV === 'production' ? false : true,
+    connection:
+      process.env.NODE_ENV === 'production'
+        ? 'http://142.93.2.154/'
+        : 'http://localhost:8000',
+    vuex: {
+      store,
+      actionPrefix: 'SOCKET_',
+      mutationPrefix: 'SOCKET_',
+    },
+  }),
+)
 
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App),
 }).$mount('#app')

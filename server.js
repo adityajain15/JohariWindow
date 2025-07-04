@@ -18,6 +18,7 @@ app.use(express.static('public'))
 // Create socket connection
 let io = require('socket.io')(server, {
   pingTimeout: 60000,
+  path: '/johari-window/socket.io/',
 })
 
 // Listen for individual clients to connect
