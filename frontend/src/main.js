@@ -5,16 +5,17 @@ import store from './store'
 import 'reset-css'
 import 'tachyons'
 import VueSocketIO from 'vue-socket.io'
+import io from 'socket.io-client'
 
 Vue.config.productionTip = false
-
 Vue.use(
   new VueSocketIO({
     debug: process.env.NODE_ENV === 'production' ? false : true,
     connection:
       process.env.NODE_ENV === 'production'
-        ? 'https://sigri.com/johari-window'
+        ? io('/johari-window')
         : 'http://localhost:8000',
+
     vuex: {
       store,
       actionPrefix: 'SOCKET_',
@@ -26,5 +27,5 @@ Vue.use(
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App),
 }).$mount('#app')
